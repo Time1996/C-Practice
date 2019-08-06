@@ -91,7 +91,35 @@ void ShellSed_sort(long A[], int N)
     }
 }
 
+//堆排序
+void PrecDown(long A[], int p, int N)
+{
+    int parent, child;
+    long x = A[p];
+    for(parent = p; (2*parent+1) < N; parent = child)
+    {
+        child = 2*parent + 1;
+        if(child!=N-1 && A[child+1]>A[child])
+            child++; //存在右儿子并且右儿子比左儿子大
+        if(A[child] < x)
+            break;
+        else
+            A[parent] = A[child];
+    }
+    A[parent] = x;
+}
 
+void Heap_sort(long A[], int N)
+{
+    for(int i = N/2; i >= 0; i--)
+        PrecDown(A, i, N); //建立堆
+    for(int i = N-1; i > 0; i--)
+    {
+        swap(A[0], A[i]);
+        PrecDown(A, 0, i);
+    }
+}
+//堆排序结束
 
 int main(int argc, char const *argv[])
 {
