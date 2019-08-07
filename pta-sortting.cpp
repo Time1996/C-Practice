@@ -121,6 +121,49 @@ void Heap_sort(long A[], int N)
 }
 //堆排序结束
 
+//归并排序（递归版）
+void Merge(long A[], long temp[], int L, int R, int RightEnd)
+{
+    int LeftEnd = R - 1;
+    int Num = RightEnd - L + 1;
+    int temIdx = L, i;
+    while(L <= LeftEnd && R <= RightEnt)
+    {
+        if(A[L] <= A[R])
+            temp[temIdx++] = A[L++];
+        else
+            temp[temIdx++] = A[R++];
+    }
+    while(L <= LeftEnd) //如果左边部分有多余
+        temp[temIdx++] = A[L++];
+    while(R <= RightEnd)//如果右边部分右多余
+        temp[temIdx++] = A[R++];
+    for(i=0; i<Num; i++, RightEnd--)
+        A[RightEnd] = temp[RightEnd];//加temp中的元素返回给A
+}
+
+void MSort(long A[], long temp[], int L, int RightEnd)
+{
+    int center;
+    if(L < RightEnd)
+    {
+        center = (L + RightEnd) / 2;
+        MSort(A, temp, L, center);
+        MSort(A, temp, center+1, RightEnd);
+        Merge(A, temp, L, center+1, RightEnd);
+    }
+}
+
+void Merge_sort(long A[], int N)
+{
+    //归并排序入口程序
+    long *temp;
+    temp = (long*)malloc(N * sizeof(long));
+    MSort(A, temp, 0, N-1);
+    free(temp);
+}
+//归并排序结束（递归版）
+
 int main(int argc, char const *argv[])
 {
     int N;
