@@ -127,7 +127,7 @@ void Merge(long A[], long temp[], int L, int R, int RightEnd)
     int LeftEnd = R - 1;
     int Num = RightEnd - L + 1;
     int temIdx = L, i;
-    while(L <= LeftEnd && R <= RightEnt)
+    while(L <= LeftEnd && R <= RightEnd)
     {
         if(A[L] <= A[R])
             temp[temIdx++] = A[L++];
@@ -163,6 +163,53 @@ void Merge_sort(long A[], int N)
     free(temp);
 }
 //归并排序结束（递归版）
+
+//归并排序(循环版)
+void Merge1(long A[], long temp[], int L, int R, int RightEnd)
+{
+    int LeftEnd = R - 1;
+    int temIdx = L;
+    while(L <= LeftEnd && R <= RightEnd)
+    {
+        if (A[L] <= A[R])
+            temp[temIdx++] = A[L++];
+        else
+            temp[temIdx++] = A[R++];
+    }
+    while(L <= LeftEnd) //如果左边部分有多余
+        temp[temIdx++] = A[L++];
+    while(R <= RightEnd) //如果右边部分有多余
+        temp[temIdx++] = A[R++];
+    //与Merge比少了最后一步
+}
+
+void Merge_pass(long A[], long temp[], int N, int length)
+{
+    int i, j;
+    for(i = 0; i < N-2*length; i += 2*length)
+        Merge1(A, temp, i, i+length, i+2*length-1);
+    if(i+length <= N-1)//超过一个子序列 =号必须加
+        Merge1(A, temp, i, i+length, N-1);
+    else //只剩一个子序列不到了
+        for(j = i; j <= N-1; j++)
+            temp[j] = A[j];
+}
+
+void Merge_sort1(long A[], int N)
+{
+    long *temp;
+    int length =1;
+    temp = (long*)malloc(N * sizeof(long));
+    while(length < N)
+    {
+        //这么做A就是排好序的数组
+        Merge_pass(A, temp, N, length);
+        length *= 2;
+        Merge_pass(temp, A, N, length);
+        length *= 2;
+    }
+}
+//归并排序结束（循环版）
 
 int main(int argc, char const *argv[])
 {
