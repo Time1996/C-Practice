@@ -39,3 +39,46 @@ int main()
     printf("%s %d", ans, maxi);
     if(c>1)printf("%d", c);
 }
+
+//用map的性质来做这题，转录于https://blog.csdn.net/hebau_pss/article/details/79362457
+
+#include <bits/stdc++.h>
+using namespace std;
+
+map<long long, int> p;
+int main()
+{
+    int i, n, max;
+    long long s, temp;
+    scanf("%d", &n);
+    max = 0;
+    for(i = 0; i < 2 * n; i++)
+    {
+        scanf("%lld", &s);
+        if(!p.count(s))
+        {
+            p[s]=0;
+        }
+        p[s]++;
+        if(p[s]>max)
+            max=p[s];
+    }
+    map<long long, int>::iterator t;
+    long long numb;
+    int flag = 0;
+    int count = 0;
+    for(t=p.begin();t!=p.end();t++)
+    {
+        if(t->second == max)
+        {
+            count++;
+            if(count == 1)
+                numb=t->first;
+        }
+    }
+    cout<<numb;
+    printf("%d", max);
+    if(count>1)
+        printf("%d", count);
+    return 0;
+}
